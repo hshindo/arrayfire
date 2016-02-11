@@ -144,6 +144,9 @@ void *MemoryManager::alloc(const size_t bytes, bool user_lock)
 
     void *ptr = NULL;
     size_t alloc_bytes = this->debug_mode ? bytes : (divup(bytes, mem_step_size) * mem_step_size);
+	//size_t o = 4;
+	//while ((1 << o) < bytes) o += 1;
+	//size_t alloc_bytes = this->debug_mode ? bytes : (1 << o);
 
     if (bytes > 0) {
         memory_info& current = this->getCurrentMemoryInfo();
