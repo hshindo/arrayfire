@@ -12,7 +12,6 @@
 #include <platform.hpp>
 #include <queue.hpp>
 #include <kernel/join.hpp>
-#include <boost/preprocessor.hpp>
 
 namespace cpu
 {
@@ -44,11 +43,6 @@ Array<Tx> join(const int dim, const Array<Tx> &first, const Array<Ty> &second)
     return out;
 }
 
-#define JOINCASE(Z, N, D) \
-	case N: \
-		getQueue().enqueue(kernel::join<T, N>, dim, out, inputs); \
-		break;
-
 template<typename T>
 Array<T> join(const int dim, const std::vector<Array<T>> &inputs)
 {
@@ -76,10 +70,11 @@ Array<T> join(const int dim, const std::vector<Array<T>> &inputs)
 
     Array<T> out = createEmptyArray<T>(odims);
 
-    switch(n_arrays) {
-		BOOST_PP_REPEAT(200, JOINCASE, _)
-    }
-
+    //switch(n_arrays) {
+	//	
+	//}
+	getQueue().enqueue(kernel::join<T>, dim, out, inputs);
+	
     return out;
 }
 

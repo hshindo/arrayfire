@@ -82,7 +82,8 @@ af_err af_join(af_array *out, const int dim, const af_array first, const af_arra
 af_err af_join_many(af_array *out, const int dim, const unsigned n_arrays, const af_array *inputs)
 {
     try {
-        ARG_ASSERT(3, n_arrays > 0 && n_arrays <= 200);
+        //ARG_ASSERT(3, n_arrays > 1 && n_arrays < 10);
+		ARG_ASSERT(3, n_arrays > 0);
 
         std::vector<ArrayInfo> info;
         info.reserve(n_arrays);

@@ -94,50 +94,52 @@ void join(Array<Tx> out, const int dim, const Array<Tx> first, const Array<Ty> s
     }
 }
 
-template<typename T, int n_arrays>
+template<typename T>
 void join(const int dim, Array<T> out, const std::vector<Array<T>> inputs)
 {
-    af::dim4 zero(0,0,0,0);
-    af::dim4 d = zero;
-    switch(dim) {
-        case 0:
-            join_append<T, T, 0>(out.get(), inputs[0].get(), zero,
-                        out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
-            for(int i = 1; i < n_arrays; i++) {
-                d += inputs[i - 1].dims();
-                join_append<T, T, 0>(out.get(), inputs[i].get(), calcOffset<0>(d),
-                        out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
-            }
-            break;
-        case 1:
-            join_append<T, T, 1>(out.get(), inputs[0].get(), zero,
-                        out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
-            for(int i = 1; i < n_arrays; i++) {
-                d += inputs[i - 1].dims();
-                join_append<T, T, 1>(out.get(), inputs[i].get(), calcOffset<1>(d),
-                        out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
-            }
-            break;
-        case 2:
-            join_append<T, T, 2>(out.get(), inputs[0].get(), zero,
-                        out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
-            for(int i = 1; i < n_arrays; i++) {
-                d += inputs[i - 1].dims();
-                join_append<T, T, 2>(out.get(), inputs[i].get(), calcOffset<2>(d),
-                        out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
-            }
-            break;
-        case 3:
-            join_append<T, T, 3>(out.get(), inputs[0].get(), zero,
-                        out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
-            for(int i = 1; i < n_arrays; i++) {
-                d += inputs[i - 1].dims();
-                join_append<T, T, 3>(out.get(), inputs[i].get(), calcOffset<3>(d),
-                        out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
-            }
-            break;
-    }
+	int n_arrays = inputs.size();
+	af::dim4 zero(0, 0, 0, 0);
+	af::dim4 d = zero;
+	switch (dim) {
+	case 0:
+		join_append<T, T, 0>(out.get(), inputs[0].get(), zero,
+			out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
+		for (int i = 1; i < n_arrays; i++) {
+			d += inputs[i - 1].dims();
+			join_append<T, T, 0>(out.get(), inputs[i].get(), calcOffset<0>(d),
+				out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
+		}
+		break;
+	case 1:
+		join_append<T, T, 1>(out.get(), inputs[0].get(), zero,
+			out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
+		for (int i = 1; i < n_arrays; i++) {
+			d += inputs[i - 1].dims();
+			join_append<T, T, 1>(out.get(), inputs[i].get(), calcOffset<1>(d),
+				out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
+		}
+		break;
+	case 2:
+		join_append<T, T, 2>(out.get(), inputs[0].get(), zero,
+			out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
+		for (int i = 1; i < n_arrays; i++) {
+			d += inputs[i - 1].dims();
+			join_append<T, T, 2>(out.get(), inputs[i].get(), calcOffset<2>(d),
+				out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
+		}
+		break;
+	case 3:
+		join_append<T, T, 3>(out.get(), inputs[0].get(), zero,
+			out.dims(), inputs[0].dims(), out.strides(), inputs[0].strides());
+		for (int i = 1; i < n_arrays; i++) {
+			d += inputs[i - 1].dims();
+			join_append<T, T, 3>(out.get(), inputs[i].get(), calcOffset<3>(d),
+				out.dims(), inputs[i].dims(), out.strides(), inputs[i].strides());
+		}
+		break;
+	}
 }
+
 
 }
 }

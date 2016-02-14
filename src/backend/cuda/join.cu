@@ -12,7 +12,6 @@
 #include <kernel/join.hpp>
 #include <stdexcept>
 #include <err_cuda.hpp>
-#include <boost/preprocessor.hpp>
 
 namespace cuda
 {
@@ -70,9 +69,10 @@ namespace cuda
         return out;
     }
 
-    template<typename T, int n_arrays>
+    template<typename T>
     void join_wrapper(const int dim, Array<T> &out, const std::vector<Array<T> > &inputs)
     {
+		int n_arrays = inputs.size();
         af::dim4 zero(0,0,0,0);
         af::dim4 d = zero;
 
@@ -108,11 +108,6 @@ namespace cuda
         }
     }
 
-#define JOINCASE(Z, N, D) \
-	case N: \
-		join_wrapper<T, N>(dim, out, inputs); \
-		break;
-
     template<typename T>
     Array<T> join(const int dim, const std::vector<Array<T> > &inputs)
     {
@@ -138,9 +133,10 @@ namespace cuda
 
         Array<T> out = createEmptyArray<T>(odims);
 
-        switch(n_arrays) {
-		BOOST_PP_REPEAT(200, JOINCASE, _)
-        }
+        //switch(n_arrays) {
+        //}
+		join_wrapper<T>(dim, out, inputs);
+
         return out;
     }
 
